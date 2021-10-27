@@ -1,3 +1,7 @@
+
+# to start
+1. open a simulator: open -a simulator
+2. use vs code debug to start app  
 # flutter_shop
 
 A new Flutter project.
