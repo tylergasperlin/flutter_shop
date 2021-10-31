@@ -6,7 +6,10 @@ import '../screens/product_detail_screen.dart';
 class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final product = Provider.of<Product>(context);
+    // this is similar to using Consumer
+    // consumer is always listening to changes so its best to use only where listening for changes is needed so you don't rerender the entire screen /widget
+    // so here we use product to populate the page and use the consumer on the icon because that needs to listen to changes
+    final product = Provider.of<Product>(context, listen: false);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -20,13 +23,15 @@ class ProductItem extends StatelessWidget {
         ),
         footer: GridTileBar(
           backgroundColor: Colors.black54,
-          leading: IconButton(
-            icon: Icon(
-                product.isFavorite ? Icons.favorite : Icons.favorite_border),
-            onPressed: () {
-              product.toggleFavoriteStatus();
-            },
-            color: Theme.of(context).accentColor,
+          leading: Consumer<Product>(
+            builder: (ctx, product, child) => IconButton(
+              icon: Icon(
+                  product.isFavorite ? Icons.favorite : Icons.favorite_border),
+              onPressed: () {
+                product.toggleFavoriteStatus();
+              },
+              color: Theme.of(context).accentColor,
+            ),
           ),
           title: Text(
             product.title,
