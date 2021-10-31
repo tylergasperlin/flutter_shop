@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/product.dart';
+import 'product.dart';
 
 // Change notifier signals changes to the object
 class Products with ChangeNotifier {
