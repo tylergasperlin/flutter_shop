@@ -38,14 +38,30 @@ class Products with ChangeNotifier {
     ),
   ];
 
+  var _showFavoritesOnly = false;
+
   // We use a getter so we return a copy of this instead of a direct reference/ pointer
   // If we had a direct pointer we might be able to edit
   List<Product> get items {
+    if (_showFavoritesOnly) {
+      return _items.where((prodItem) => prodItem.isFavorite).toList();
+    }
+
     return [..._items];
   }
 
   Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
+  }
+
+  void showFavoritsOnly() {
+    _showFavoritesOnly = true;
+    notifyListeners();
+  }
+
+  void showAll() {
+    _showFavoritesOnly = false;
+    notifyListeners();
   }
 
   void addProduct() {
