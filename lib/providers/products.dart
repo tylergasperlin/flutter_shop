@@ -61,7 +61,16 @@ class Products with ChangeNotifier {
         imageUrl: product.imageUrl);
     // anything listening to this class will get rebuilt
     _items.add(newProduct);
-    _items.insert(0, newProduct);
     notifyListeners();
+  }
+
+  void updateProduct(String id, Product newProduct) {
+    final prodIndex = _items.indexWhere((prod) => prod.id == id);
+    if (prodIndex >= 0) {
+      _items[prodIndex] = newProduct;
+      notifyListeners();
+    } else {
+      print('...');
+    }
   }
 }
