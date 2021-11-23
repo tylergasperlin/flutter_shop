@@ -78,6 +78,9 @@ class Products with ChangeNotifier {
       // anything listening to this class will get rebuilt
       _items.add(newProduct);
       notifyListeners();
+    }).catchError((error) {
+      print(error);
+      throw error;
     });
   }
 
