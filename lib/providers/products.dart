@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/models/http_exception.dart';
 import 'product.dart';
 import 'package:http/http.dart' as http;
 
@@ -92,20 +93,22 @@ class Products with ChangeNotifier {
     }
   }
 
-  void deleteProduct(String id) {
+  Future<void> deleteProduct(String id) async {
     final url = Uri.parse(
         'https://flutter-shop-6c8e1-default-rtdb.firebaseio.com/products/$id.json');
     final existingProductsIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = items[existingProductsIndex];
     _items.removeAt(existingProductsIndex);
     notifyListeners();
-    http.delete(url).then((_) {
-      existingProduct = null;
-    }).catchError((_) {
+    final response = await http.delete(url);
+    if (response.statusCode >= 400) {
       _items.insert(existingProductsIndex, existingProduct);
       notifyListeners();
-    });
 
+      throw HttpException('Could not delte product');
+    }
+
+    existingProduct = null;
     _items.removeWhere((prod) => prod.id == id);
     notifyListeners();
   }
