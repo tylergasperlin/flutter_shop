@@ -33,12 +33,14 @@ class Orders with ChangeNotifier {
         body: json.encode({
           'amount': total,
           'dateTime': timeStamp.toIso8601String(),
-          'products': cartProducts.map((cp) => {
-                'id': cp.id,
-                'title': cp.title,
-                'quantity': cp.quantity,
-                'price': cp.price
-              })
+          'products': cartProducts
+              .map((cp) => {
+                    'id': cp.id,
+                    'title': cp.title,
+                    'quantity': cp.quantity,
+                    'price': cp.price
+                  })
+              .toList(),
         }));
 
     _orders.insert(
